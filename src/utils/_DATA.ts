@@ -1,4 +1,4 @@
-let users = {
+let users:Record<any, any> = {
   sarah_edo: {
     id: "sarah_edo",
     name: "Sarah Drasner",
@@ -19,7 +19,7 @@ let users = {
   }
 }
 
-let tweets = {
+let tweets:Record<any, any> = {
   "8xf0y6ziyjabvozdd253nd": {
     id: "8xf0y6ziyjabvozdd253nd",
     text: "Shoutout to all the speakers I know for whom English is not a first language, but can STILL explain a concept well. It's hard enough to give a good talk in your mother tongue!",
@@ -214,15 +214,15 @@ export function _getTweets () {
   })
 }
 
-export function _saveLikeToggle ({ id, hasLiked, authedUser }) {
-  return new Promise((res, rej) => {
+export function _saveLikeToggle ({ id, hasLiked, authedUser }:{id:any, hasLiked:any, authedUser:any}) {
+  return new Promise<void>((res, rej) => {
     setTimeout(() => {
       tweets = {
         ...tweets,
         [id]: {
           ...tweets[id],
           likes: hasLiked === true
-            ? tweets[id].likes.filter((uid) => uid !== authedUser)
+            ? tweets[id].likes.filter((uid:any) => uid !== authedUser)
             : tweets[id].likes.concat([authedUser])
         }
       }
@@ -236,7 +236,7 @@ function generateUID () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-function formatTweet ({ author, text, replyingTo = null }) {
+function formatTweet ({ author, text, replyingTo = null }:{author:any, text:any, replyingTo:any}) {
   return {
     author,
     id: generateUID(),
@@ -248,7 +248,7 @@ function formatTweet ({ author, text, replyingTo = null }) {
   }
 }
 
-export function _saveTweet ({ text, author, replyingTo }) {
+export function _saveTweet ({ text, author, replyingTo }:{text:any, author:any, replyingTo:any}) {
   return new Promise((res, rej) => {
     const formattedTweet = formatTweet({
       text,

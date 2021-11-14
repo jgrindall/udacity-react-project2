@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {connect} from "react-redux";
 import {toggleLike} from "../actions/tweets";
 
-function formatTweet (tweet, author, authedUser, parentTweet) {
+function formatTweet (tweet:any, author:any, authedUser:any, parentTweet:any) {
     const { id, likes, replies, text, timestamp } = tweet
     const { name, avatarURL } = author
 
@@ -22,7 +22,7 @@ function formatTweet (tweet, author, authedUser, parentTweet) {
     }
 }
 
-class Tweet extends Component {
+class Tweet extends Component<{tweet:any, authedUser:any, dispatch:any}> {
     gotoParent(){
         alert("goto parent");
     }
@@ -52,7 +52,7 @@ class Tweet extends Component {
   }
 }
 
-function mapStateToProps(state, props){
+function mapStateToProps(state:any, props:any){
     const tweet = state.tweets[props.id];
     const parentTweet = tweet.replyingTo ? state.tweets[tweet.replyingTo] : null;
   return {

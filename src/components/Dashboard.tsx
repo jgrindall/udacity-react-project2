@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from "react-redux";
 import Tweet from "./Tweet";
-class Dashboard extends Component {
+class Dashboard extends Component<{dispatch:any, tweetIds:any[]}> {
   componentDidMount() {
 
   }
@@ -23,7 +23,7 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state:{tweets: any}){
   return {
     tweetIds:Object.keys(state.tweets)
   }
