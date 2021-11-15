@@ -1,13 +1,15 @@
-export const SET_AUTHED_USER:string = 'SET_AUTHED_USER'
+export const SET_AUTHED_USER:string = 'SET_AUTHED_USER';
 
 type AuthAction = {
   type:string,
-  id:string
+  id:string | null
 };
 
-export function setAuthedUser (id:string) : AuthAction {
+export function setAuthedUser (id:string | null) : AuthAction {
   return {
     type: SET_AUTHED_USER,
     id
   }
 }
+
+

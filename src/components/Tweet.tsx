@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {toggleLike} from "../actions/tweets";
 
 function formatTweet (tweet:any, author:any, authedUser:any, parentTweet:any) {
-    const { id, likes, replies, text, timestamp } = tweet
-    const { name, avatarURL } = author
+    const { id, likes, replies, text, timestamp } = tweet;
+    const { name, avatarURL } = author;
 
     return {
         name,
