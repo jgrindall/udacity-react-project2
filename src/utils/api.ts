@@ -1,22 +1,22 @@
 import {
-    _getTweets,
-    _getUsers,
     _saveLikeToggle,
     _saveTweet,
 } from './_DATA'
 
-import {_getQuizUsers} from "../_DATA";
-import {UserList} from "../types";
+import {_getQuestions, _getQuizUsers} from "../_DATA";
 
-export async function getInitialData() {
-    const users = await _getUsers();
+import {QuestionList, UserList} from "../types";
+
+export async function getInitialData(): Promise<{quizUsers: UserList, questions: QuestionList }> {
+    //const users = await _getUsers();
     const quizUsers: UserList = await _getQuizUsers();
-    const tweets: any = await _getTweets();
+    //const tweets: any = await _getTweets();
+    const questions = await _getQuestions();
     debugger;
     return {
-        users,
         quizUsers,
-        tweets
+        //tweets,
+        questions
     };
 }
 

@@ -32,3 +32,9 @@ export type Question = {
 };
 
 export type QuestionList = Record<string, Question>;
+
+export type RootState = {
+    authedUser:string,
+    quizUsers:UserList,
+    questions: QuestionList
+};

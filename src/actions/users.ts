@@ -1,9 +1,15 @@
+import {UserList} from "../types";
 
 export const RECEIVE_USERS = 'RECEIVE_USERS';
 
-export function receiveUsers (users:any) {
-  return {
-    type: RECEIVE_USERS,
-    users
-  }
+export type QAction = {
+    type: string,
+    users: UserList
+};
+
+export function receiveUsers(users: UserList) {
+    return {
+        type: RECEIVE_USERS,
+        users
+    }
 }

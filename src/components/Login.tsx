@@ -1,10 +1,30 @@
 import React, {Component} from 'react'
-import {connect} from "react-redux";
 import {User, UserList} from "../types";
 import {setAuthedUser} from "../actions/authedUser";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { connect, ConnectedProps } from "react-redux";
+import {RootState} from "../types";
 
+const mapStateToProps = (state: RootState) => {
+    return {
+        loading: !state.authedUser,
+        quizUsers:state.quizUsers
+    }
+};
 
-class Login extends Component<{ dispatch: any, quizUsers: UserList }> {
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type MyProps = PropsFromRedux & RouteComponentProps & {
+    loginProp: any
+};
+
+type MyState = {
+
+};
+
+class Login extends Component<MyProps, MyState> {
     onSelectUser(user:User){
         this.props.dispatch(setAuthedUser(user.id));
     }
@@ -14,8 +34,8 @@ class Login extends Component<{ dispatch: any, quizUsers: UserList }> {
             const user = this.props.quizUsers[id];
             return (
                 <span onClick={this.onSelectUser.bind(this, user)}>
-                    <img src={user.avatarURL}/>
-                    {user.name}
+                    <img alt="avatar" src={user.avatarURL}/>
+                    {user.name}.
                 </span>
             );
         });
@@ -27,13 +47,11 @@ class Login extends Component<{ dispatch: any, quizUsers: UserList }> {
                 </ul>
             </div>
         )
+        return (
+            <div>Login</div>
+        );
     }
 }
 
-function mapStateToProps(state: { quizUsers: UserList }) {
-    return {
-        quizUsers: state.quizUsers
-    }
-}
+export default withRouter(connector(Login));
 
-export default connect(mapStateToProps)(Login);
