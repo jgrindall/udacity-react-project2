@@ -26,6 +26,7 @@ type MyState = {
 
 class Login extends Component<MyProps, MyState> {
     onSelectUser(user:User){
+        alert("login")
         this.props.dispatch(setAuthedUser(user.id));
     }
     render() {
@@ -33,7 +34,7 @@ class Login extends Component<MyProps, MyState> {
         const users = ids.map(id => {
             const user = this.props.quizUsers[id];
             return (
-                <span onClick={this.onSelectUser.bind(this, user)}>
+                <span key={user.id} onClick={this.onSelectUser.bind(this, user)}>
                     <img alt="avatar" src={user.avatarURL}/>
                     {user.name}.
                 </span>

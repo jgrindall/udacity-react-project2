@@ -16,7 +16,6 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type MyProps = PropsFromRedux & RouteComponentProps & {
-    questionSummaryProp: any,
     question: Question
 };
 

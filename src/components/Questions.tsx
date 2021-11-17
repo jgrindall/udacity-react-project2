@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Question, QuestionList, QuestionOption} from "../types";
 import QuestionSummary from "./QuestionSummary";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import {withRouter, RouteComponentProps, Link} from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
 
@@ -41,7 +41,12 @@ class Questions extends Component<MyProps, MyState> {
             const question = this.props.questions[id];
             return (
                 <li key={id}>
-                    <QuestionSummary question={question}></QuestionSummary>
+                    <div>
+                        <QuestionSummary question={question}></QuestionSummary>
+                        <Link to={{
+                            pathname: '/question/' + id
+                        }}>Open</Link>
+                    </div>
                 </li>
             );
         };

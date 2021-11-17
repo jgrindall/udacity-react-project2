@@ -36,10 +36,9 @@ class App extends Component<MyProps, MyState> {
             <div>
                 <NavBar></NavBar>
                 <Switch>
-                    <Route path='/' component={Login}></Route>
-                    <Route path='/questions' component={Questions}></Route>
-                    <Route path='/question/:id' component={QuestionView}></Route>
-
+                    <Route exact path='/question/:id' component={QuestionView}></Route>
+                    <Route exact path='/questions' component={Questions}></Route>
+                    <Route exact path='/' component={Login}></Route>
                 </Switch>
             </div>
         )

@@ -2,11 +2,13 @@ import React, {Component} from 'react'
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
+import QuestionSummary from "./QuestionSummary";
 
 const mapStateToProps = (state: RootState) => {
     return {
         loading: !state.authedUser,
-        quizUsers:state.quizUsers
+        quizUsers:state.quizUsers,
+        questions:state.questions
     }
 };
 
@@ -22,15 +24,39 @@ type MyState = {
 
 };
 
+type Match = {
+    params:{
+        id:string
+    }
+}
+
 class QuestionView extends Component<MyProps, MyState> {
     render() {
-        debugger;
+        const id = (this.props.match as unknown as Match).params.id as string;
+        const question = this.props.questions[id];
+
+        let el;
+
+        if(question){
+            el = (
+                <div>
+                    <QuestionSummary question={question}></QuestionSummary>
+                </div>
+            );
+        }
+        else{
+            el =  (
+                <div>
+                    Not found
+                </div>
+            );
+        }
+
         return (
             <div>
-                <span>{"b"}</span>
-                <span>{"a"}</span>
+                {el}
             </div>
-        )
+        );
     }
 }
 
