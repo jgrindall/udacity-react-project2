@@ -27,7 +27,6 @@ class QuestionSummary extends Component<MyProps, MyState> {
     render() {
         let authorName = "<Unknown user>", avatar = "/unknown.png";
         const author = this.props.quizUsers[this.props.question.author];
-        debugger;
         if(author){
             avatar = author.avatarURL;
             authorName = author.name;
