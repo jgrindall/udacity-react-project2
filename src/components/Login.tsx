@@ -1,14 +1,15 @@
 import React, {Component} from 'react'
 import {User, UserList} from "../types";
 import {setAuthedUser} from "../actions/authedUser";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import {withRouter, RouteComponentProps, Redirect} from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
 
 const mapStateToProps = (state: RootState) => {
     return {
         loading: !state.authedUser,
-        quizUsers:state.quizUsers
+        quizUsers:state.quizUsers,
+        authedUser: state.authedUser
     }
 };
 
@@ -26,10 +27,14 @@ type MyState = {
 
 class Login extends Component<MyProps, MyState> {
     onSelectUser(user:User){
-        alert("login")
         this.props.dispatch(setAuthedUser(user.id));
     }
     render() {
+
+        if(this.props.authedUser){
+            return <Redirect to={"/questions"}/>;
+        }
+
         const ids = Object.keys(this.props.quizUsers);
         const users = ids.map(id => {
             const user = this.props.quizUsers[id];
