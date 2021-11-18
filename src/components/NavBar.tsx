@@ -3,10 +3,13 @@ import {connect, ConnectedProps} from "react-redux";
 import {Link, RouteComponentProps} from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import {RootState} from "../types";
+import {setAuthedUser} from "../actions/authedUser";
+import UserIndicator from "./UserIndicator";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser
+        loading: !state.authedUser,
+        authedUser: state.authedUser,
     }
 };
 
@@ -27,36 +30,29 @@ class NavBar extends Component<MyProps, MyState> {
 
     }
     onLogout(){
-       // this.props.dispatch(setAuthedUser(null));
+       this.props.dispatch(setAuthedUser(null));
     }
     render() {
         return (
             <div className='header'>
-                <button className="pure-button pure-button-primary">
-                    <Link to={{
-                        pathname: '/'
-                    }}>Home</Link>
-                </button>
-                <button className="pure-button pure-button-primary">
+
+                <button className="pure-button pure-button-primary" disabled={!this.props.authedUser}>
                     <Link to={{
                         pathname: '/add'
                     }}>+ New Question</Link>
+                </button>
+                <button className="pure-button pure-button-primary" disabled={!this.props.authedUser}>
+                    <Link to={{
+                        pathname: '/leaderboard'
+                    }}>Leaderboard</Link>
                 </button>
                 <button className="pure-button pure-button-primary">
                     <Link to={{
                         pathname: '/questions'
                     }}>Questions</Link>
                 </button>
-                <button className="pure-button pure-button-primary">
-                    <Link to={{
-                        pathname: '/dashboard'
-                    }}>See all</Link>
-                </button>
-                <button
-                    onClick={this.onLogout.bind(this)}
-                    className="pure-button pure-button-primary">
-                        Logout
-                </button>
+
+                <UserIndicator></UserIndicator>
             </div>
         )
     }
