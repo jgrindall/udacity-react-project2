@@ -29,9 +29,6 @@ class NavBar extends Component<MyProps, MyState> {
     componentDidMount() {
 
     }
-    onLogout(){
-       this.props.dispatch(setAuthedUser(null));
-    }
     render() {
         return (
             <div className='header'>
@@ -48,7 +45,7 @@ class NavBar extends Component<MyProps, MyState> {
                 </button>
                 <button className="pure-button pure-button-primary">
                     <Link to={{
-                        pathname: '/questions'
+                        pathname: '/questions/unanswered'
                     }}>Questions</Link>
                 </button>
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
-import QuestionSummary from "./QuestionSummary";
+import QuestionSubmission from "./QuestionSubmission";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -39,8 +39,8 @@ class QuestionView extends Component<MyProps, MyState> {
 
         if(question){
             el = (
-                <div>
-                    <QuestionSummary question={question}></QuestionSummary>
+                <div className="questionView">
+                    <QuestionSubmission question={question}></QuestionSubmission>
                 </div>
             );
         }

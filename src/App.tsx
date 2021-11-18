@@ -38,36 +38,38 @@ class App extends Component<MyProps, MyState> {
         return (
             <div>
                 <NavBar></NavBar>
-                <Switch>
-                    <ProtectedRoute exact
-                            path='/question/:id'
-                            isAllowed={!!this.props.authedUser}
-                            component={QuestionView}>
-                    </ProtectedRoute>
-                    <Route exact
-                           path='/questions'
-                           component={Questions}>
-                    </Route>
-                    <ProtectedRoute exact
-                           path='/add'
-                           isAllowed={!!this.props.authedUser}
-                           component={AddQuestion}>
-                    </ProtectedRoute>
-                    <ProtectedRoute exact
-                           path='/leaderboard'
-                           isAllowed={!!this.props.authedUser}
-                           component={AddQuestion}>
-                    </ProtectedRoute>
-                    <Route exact
-                           path='/login'
-                           component={Login}>
-                    </Route>
-                    <Route exact
-                           path='/'
-                           component={Login}>
-                    </Route>
+                <div id="page">
+                    <Switch>
+                        <ProtectedRoute exact
+                                path='/question/:id'
+                                isAllowed={!!this.props.authedUser}
+                                component={QuestionView}>
+                        </ProtectedRoute>
+                        <Route
+                                path='/questions/:filter'
+                                component={Questions}>
+                        </Route>
+                        <ProtectedRoute exact
+                               path='/add'
+                               isAllowed={!!this.props.authedUser}
+                               component={AddQuestion}>
+                        </ProtectedRoute>
+                        <ProtectedRoute exact
+                               path='/leaderboard'
+                               isAllowed={!!this.props.authedUser}
+                               component={AddQuestion}>
+                        </ProtectedRoute>
+                        <Route exact
+                               path='/login'
+                               component={Login}>
+                        </Route>
+                        <Route exact
+                               path='/'
+                               component={Login}>
+                        </Route>
 
-                </Switch>
+                    </Switch>
+                </div>
             </div>
         )
     }

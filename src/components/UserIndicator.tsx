@@ -35,7 +35,7 @@ class UserIndicator extends Component<MyProps, MyState> {
             (
                 <div>
 
-                    <img src={user.avatarURL}/>
+                    <img className="avatar avatar-small" src={user.avatarURL}/>
                     <span>
                         {user.name}
                     </span>

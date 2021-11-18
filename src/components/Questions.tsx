@@ -4,6 +4,7 @@ import QuestionSummary from "./QuestionSummary";
 import {withRouter, RouteComponentProps, Link} from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
+import QuestionNavigation from "./QuestionNavigation";
 
 const _isAnswered = (user:any) => (question:Question):boolean => {
     if(!user){
@@ -33,8 +34,17 @@ type MyState = {
 
 };
 
+type Match = {
+    params:{
+        filter:"answered" | "unanswered"
+    }
+}
+
 class Questions extends Component<MyProps, MyState> {
     render() {
+
+        const filter = (this.props.match as unknown as Match).params.filter as string;
+
         const isAnswered = _isAnswered(this.props.authedUser);
 
         const makeQuestionList = (id:string) => {
@@ -43,9 +53,7 @@ class Questions extends Component<MyProps, MyState> {
                 <li key={id}>
                     <div>
                         <QuestionSummary question={question}></QuestionSummary>
-                        <Link to={{
-                            pathname: '/question/' + id
-                        }}>View Poll</Link>
+
                     </div>
                 </li>
             );
@@ -53,32 +61,27 @@ class Questions extends Component<MyProps, MyState> {
 
         const ids:string[] = Object.keys(this.props.questions);
 
-        const questionsAnswered = ids
+        let questionsAnswered = ids
             .filter(id=>{
                 const question = this.props.questions[id];
                 return isAnswered(question);
             })
             .map(makeQuestionList);
 
-
-        const questionsUnAnswered = ids
+        let questionsUnAnswered = ids
             .filter(id=>{
                 const question = this.props.questions[id];
                 return !isAnswered(question);
             })
             .map(makeQuestionList);
 
+        const element = (filter === "answered" ?  questionsAnswered :  questionsUnAnswered);
 
         return (
-            <div>
-                <span>Questions Ans:</span>
-                <ul>
-                    {questionsAnswered}
-                </ul>
-                <span>Questions Unans:</span>
-                <ul>
-                    {questionsUnAnswered}
-                </ul>
+
+            <div className="questions">
+                <QuestionNavigation filter={filter}></QuestionNavigation>
+                {element.length >= 1 ? <ul>{element}</ul> : <div>None found</div>}
             </div>
         )
     }

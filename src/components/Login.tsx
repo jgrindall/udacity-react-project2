@@ -32,22 +32,23 @@ class Login extends Component<MyProps, MyState> {
     render() {
 
         if(this.props.authedUser){
-            return <Redirect to={"/questions"}/>;
+            return <Redirect to={"/questions/unanswered"}/>;
         }
 
         const ids = Object.keys(this.props.quizUsers);
         const users = ids.map(id => {
             const user = this.props.quizUsers[id];
             return (
-                <span key={user.id} onClick={this.onSelectUser.bind(this, user)}>
-                    <img alt="avatar" src={user.avatarURL}/>
-                    {user.name}.
-                </span>
+                <div className="user" key={user.id}>
+                    <img className = "avatar" alt="avatar" src={user.avatarURL}/>
+                    <span>{user.name}</span>
+                    <button className="pure-button pure-button-primary" onClick={this.onSelectUser.bind(this, user)}>Select</button>
+                </div>
             );
         });
         return (
-            <div>
-                <span>Choose a user:</span>
+            <div className="login">
+                <p className="title">Please login:</p>
                 <ul>
                     {users}
                 </ul>

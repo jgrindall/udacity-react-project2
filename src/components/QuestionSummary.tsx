@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from "react-redux";
-import {RouteComponentProps} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import {RootState, Question} from "../types";
 
 const mapStateToProps = (state: RootState) => {
@@ -25,39 +25,53 @@ type MyState = {
 
 class QuestionSummary extends Component<MyProps, MyState> {
     render() {
-        let authorName = "<Unknown user>", avatar = "/unknown.png";
-        const author = this.props.quizUsers[this.props.question.author];
+        const question:Question = this.props.question;
+        let authorName:string = "<Unknown user>", avatar = "/unknown.png";
+        const author = this.props.quizUsers[question.author];
         if(author){
             avatar = author.avatarURL;
             authorName = author.name;
         }
         return (
-            <div>
+            <div className="question">
                 <p>
-                    Would you rather...
+                    {authorName} asked:
                 </p>
-                <span>
-                    {authorName}
-                </span>
-                <img src={avatar}/>
-                <span>
-                    {this.props.question.optionOne.text.split(" ")[0] + "..."}
-                </span>
-                <span>
-                    {this.props.question.optionOne.text}
-                </span>
-                <span>
-                    {this.props.question.optionTwo.text}
-                </span>
+                <div className="container">
+                    <div className="left">
+                        <img className="avatar" src={avatar}/>
+                    </div>
+                    <div className="right">
+                        <p>
+                            Would you rather...
+                        </p>
 
-                <p>{this.props.question.optionOne.votes.length}</p>
-                <p>{this.props.question.optionTwo.votes.length}</p>
+                        <span>
+                            {question.optionOne.text.split(" ")[0] + "..."}
+                        </span>
 
-                <p>You said</p>
-                <p>{this.props.question.optionOne.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
-                <p>{this.props.question.optionTwo.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
+                        <span>
+                            {question.optionOne.text}
+                        </span>
 
-                <button className="pure-button pure-button-primary">Submit</button>
+                        <span>
+                            {question.optionTwo.text}
+                        </span>
+
+                        <p>{question.optionOne.votes.length}</p>
+                        <p>{question.optionTwo.votes.length}</p>
+
+                        <p>You said</p>
+                        <p>{question.optionOne.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
+                        <p>{question.optionTwo.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
+
+                    </div>
+                </div>
+
+                <Link className="link" to={{
+                    pathname: '/question/' + question.id
+                }}>View Poll</Link>
+
             </div>
         )
     }

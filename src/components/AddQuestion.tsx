@@ -32,18 +32,20 @@ class AddQuestion extends Component<MyProps, MyState> {
             authorName = author.name;
         }
         return (
-            <div>
+            <div className="addQuestion">
                 <p>
-                   create new question
+                    {authorName}, create a new question!
                 </p>
-                <span>
-                    {authorName}
-                </span>
-                <img src={avatar}/>
-
-                <input type="text"/>
-
-                <input type="text"/>
+                <div className="container">
+                    <div className="left">
+                        <img className="avatar" src={avatar}/>
+                    </div>
+                    <div className="right">
+                        <input type="text" placeholder="Option One"/>
+                        <br/>
+                        <input type="text" placeholder="Option Two"/>
+                    </div>
+                </div>
 
                 <button className="pure-button pure-button-primary">Submit</button>
             </div>
