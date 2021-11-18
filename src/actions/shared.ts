@@ -2,8 +2,6 @@ import {getInitialData} from '../utils/api';
 import {receiveUsers, QAction} from '../actions/users';
 import {receiveQuizUsers, QAction as QAction2} from '../actions/quizUsers';
 import {receiveQuestions, QAction as QAction3} from "../actions/questions";
-import {QuestionList, UserList} from "../types";
-import {Dispatch} from "redux";
 
 export function handleInitialData(): any {
     return (dispatch: any) => {
