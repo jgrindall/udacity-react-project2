@@ -1,5 +1,3 @@
-import {Route} from "react-router-dom";
-import React from "react";
 import {RouteProps, Redirect} from "react-router-dom";
 
 export type AnswerOption = 'optionOne'  | 'optionTwo';
@@ -44,6 +42,5 @@ export type RootState = {
 };
 
 export interface ProtectedRouteProps extends RouteProps {
-    isAuthenticated: boolean;
-    authenticationPath: string;
+    isAllowed: boolean;
 }

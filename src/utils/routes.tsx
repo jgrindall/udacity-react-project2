@@ -1,23 +1,19 @@
 import {Route} from "react-router-dom";
-import React from "react";
-import {RouteProps, Redirect} from "react-router-dom";
+import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
 import {ProtectedRouteProps} from "../types";
 
-class ProtectedRoute extends Route<ProtectedRouteProps> {
-    public render() {
-        let redirectPath: string = '';
-        if (!this.props.isAuthenticated) {
-            redirectPath = this.props.authenticationPath;
-        }
-        const redirect = <Redirect to="/somewhere/else" />;
-
-        /*if (redirectPath) {
-            return <Route {...this.props} component={renderComponent} render={undefined}/>;
-        }
-        else {
-            return <Route {...this.props}/>;
-        }*/
+class RedirectComponent extends Component<{}, {}> {
+    render() {
+        return <Redirect to={"/login"}/>;
     }
 }
 
-export default ProtectedRoute;
+export class ProtectedRoute extends Route<ProtectedRouteProps> {
+    public render() {
+        return this.props.isAllowed ?
+            (<Route {...this.props}/>)
+            :
+            <Route {...this.props} component={RedirectComponent} />;
+    }
+}
