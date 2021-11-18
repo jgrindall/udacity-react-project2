@@ -23,11 +23,10 @@ type MyState = {
 
 };
 
-class QuestionSummary extends Component<MyProps, MyState> {
+class AddQuestion extends Component<MyProps, MyState> {
     render() {
         let authorName = "<Unknown user>", avatar = "/unknown.png";
-        const author = this.props.quizUsers[this.props.question.author];
-        debugger;
+        const author = this.props.quizUsers[this.props.authedUser];
         if(author){
             avatar = author.avatarURL;
             authorName = author.name;
@@ -35,28 +34,16 @@ class QuestionSummary extends Component<MyProps, MyState> {
         return (
             <div>
                 <p>
-                    Would you rather...
+                   create new question
                 </p>
                 <span>
                     {authorName}
                 </span>
                 <img src={avatar}/>
-                <span>
-                    {this.props.question.optionOne.text.split(" ")[0] + "..."}
-                </span>
-                <span>
-                    {this.props.question.optionOne.text}
-                </span>
-                <span>
-                    {this.props.question.optionTwo.text}
-                </span>
 
-                <p>{this.props.question.optionOne.votes.length}</p>
-                <p>{this.props.question.optionTwo.votes.length}</p>
+                <input type="text"/>
 
-                <p>You said</p>
-                <p>{this.props.question.optionOne.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
-                <p>{this.props.question.optionTwo.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
+                <input type="text"/>
 
                 <button className="pure-button pure-button-primary">Submit</button>
             </div>
@@ -64,4 +51,4 @@ class QuestionSummary extends Component<MyProps, MyState> {
     }
 }
 
-export default connector(QuestionSummary)
+export default connector(AddQuestion)

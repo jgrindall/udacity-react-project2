@@ -1,3 +1,7 @@
+import {Route} from "react-router-dom";
+import React from "react";
+import {RouteProps, Redirect} from "react-router-dom";
+
 export type AnswerOption = 'optionOne'  | 'optionTwo';
 
 export type AnswerList = Record<string, AnswerOption>;
@@ -38,3 +42,8 @@ export type RootState = {
     quizUsers:UserList,
     questions: QuestionList
 };
+
+export interface ProtectedRouteProps extends RouteProps {
+    isAuthenticated: boolean;
+    authenticationPath: string;
+}

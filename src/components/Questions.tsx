@@ -45,7 +45,7 @@ class Questions extends Component<MyProps, MyState> {
                         <QuestionSummary question={question}></QuestionSummary>
                         <Link to={{
                             pathname: '/question/' + id
-                        }}>Open</Link>
+                        }}>View Poll</Link>
                     </div>
                 </li>
             );
