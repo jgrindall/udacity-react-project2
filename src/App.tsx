@@ -9,10 +9,12 @@ import Login from "./components/Login";
 import {Route, Switch} from "react-router-dom";
 import QuestionView from "./components/QuestionView";
 import {RootState} from "./types";
+import {ProtectedRoute} from "./utils/routes";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser
+        loading: !state.authedUser,
+        authedUser: state.authedUser
     }
 };
 
@@ -37,10 +39,33 @@ class App extends Component<MyProps, MyState> {
             <div>
                 <NavBar></NavBar>
                 <Switch>
-                    <Route exact path='/question/:id' component={QuestionView}></Route>
-                    <Route exact path='/questions' component={Questions}></Route>
-                    <Route exact path='/add' component={AddQuestion}></Route>
-                    <Route exact path='/' component={Login}></Route>
+                    <ProtectedRoute exact
+                            path='/question/:id'
+                            isAllowed={!!this.props.authedUser}
+                            component={QuestionView}>
+                    </ProtectedRoute>
+                    <Route exact
+                           path='/questions'
+                           component={Questions}>
+                    </Route>
+                    <ProtectedRoute exact
+                           path='/add'
+                           isAllowed={!!this.props.authedUser}
+                           component={AddQuestion}>
+                    </ProtectedRoute>
+                    <ProtectedRoute exact
+                           path='/leaderboard'
+                           isAllowed={!!this.props.authedUser}
+                           component={AddQuestion}>
+                    </ProtectedRoute>
+                    <Route exact
+                           path='/login'
+                           component={Login}>
+                    </Route>
+                    <Route exact
+                           path='/'
+                           component={Login}>
+                    </Route>
 
                 </Switch>
             </div>
