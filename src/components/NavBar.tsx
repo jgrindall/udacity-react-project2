@@ -33,6 +33,12 @@ class NavBar extends Component<MyProps, MyState> {
         return (
             <div className='header'>
 
+                <button className="pure-button pure-button-primary">
+                    <Link to={{
+                        pathname: '/questions/unanswered'
+                    }}>Home</Link>
+                </button>
+
                 <button className="pure-button pure-button-primary" disabled={!this.props.authedUser}>
                     <Link to={{
                         pathname: '/add'
@@ -43,11 +49,7 @@ class NavBar extends Component<MyProps, MyState> {
                         pathname: '/leaderboard'
                     }}>Leaderboard</Link>
                 </button>
-                <button className="pure-button pure-button-primary">
-                    <Link to={{
-                        pathname: '/questions/unanswered'
-                    }}>Questions</Link>
-                </button>
+
 
                 <UserIndicator></UserIndicator>
             </div>

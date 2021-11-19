@@ -53,7 +53,6 @@ class Questions extends Component<MyProps, MyState> {
                 <li key={id}>
                     <div>
                         <QuestionSummary question={question}></QuestionSummary>
-
                     </div>
                 </li>
             );
@@ -61,27 +60,24 @@ class Questions extends Component<MyProps, MyState> {
 
         const ids:string[] = Object.keys(this.props.questions);
 
-        let questionsAnswered = ids
+        const filterFn = (filter === "answered" ?  ((question:Question) => isAnswered(question)) :  ((question:Question) => !isAnswered(question)));
+
+        const element = ids
             .filter(id=>{
                 const question = this.props.questions[id];
-                return isAnswered(question);
+                return filterFn(question);
+            })
+            .sort((a:string, b:string)=>{
+                const timeA = this.props.questions[a]?.timestamp, timeB = this.props.questions[b]?.timestamp;
+                return timeA === timeB ? 0 : (timeA < timeB ? -1 : 1);
             })
             .map(makeQuestionList);
-
-        let questionsUnAnswered = ids
-            .filter(id=>{
-                const question = this.props.questions[id];
-                return !isAnswered(question);
-            })
-            .map(makeQuestionList);
-
-        const element = (filter === "answered" ?  questionsAnswered :  questionsUnAnswered);
 
         return (
 
             <div className="questions">
                 <QuestionNavigation filter={filter}></QuestionNavigation>
-                {element.length >= 1 ? <ul>{element}</ul> : <div>None found</div>}
+                {element.length >= 1 ? <ul>{element}</ul> : <div className='none'>None found</div>}
             </div>
         )
     }

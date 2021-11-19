@@ -1,0 +1,75 @@
+
+The user should be logged in to submit new polling questions, vote, and view the leaderboard.
+
+Once the user logs in, the home page is shown.
+
+Whenever the user types something in the address bar, the user is asked to log in before the requested page is shown.
+
+Application Functionality
+
+The answered and unanswered polls are both available at the root.
+The unanswered questions are shown by default.
+The user can navigate to the leaderboard.
+
+A polling question links to details of that poll.
+
+The polls in both categories are arranged from the most recently created (top) to the least recently created (bottom).
+
+Are the details of each poll displayed with all of the relevant information?
+
+The details of the poll are available at questions/:question_id.
+When a poll is clicked on the home page, the following is shown:
+the text “Would You Rather”;
+the picture of the user who posted the polling question; and
+the two options.
+For answered polls, each of the two options contains the following:
+the text of the option;
+the number of people who voted for that option;
+the percentage of people who voted for that option.
+The option selected by the logged in user should be clearly marked.
+
+When the user is logged in, the details of the poll are shown.
+
+ If the user is logged out, he/she is asked to log in before before being able to access the poll.
+
+The application asks the user to sign in and shows a 404 page if that poll does not exist. 
+
+(In other words, if a user creates a poll and then the same or another user tries to access that poll by its url,
+
+the user should be asked to sign in and then be shown a 404 page.
+
+Please keep in mind that new polls will not be accessible at their url because of the way the backend is set up in this application.)
+
+Upon voting in a poll, all of the information of the answered poll is displayed.
+The user’s response is recorded and is clearly visible on the poll details page.
+When the user comes back to the home page, the polling question appears in the “Answered” column.
+The voting mechanism works correctly, and the data on the leaderboard changes appropriately.
+
+The form is available at/add.
+Upon submitting the form, a new poll is created and the user is taken to the home page.
+The new polling question appears in the correct category on the home page.
+
+
+Each entry on the leaderboard contains the following:
+the user’s name;
+the user’s picture;
+the number of questions the user asked; and
+the number of questions the user answered.
+Users are ordered in descending order based on the sum of the number of questions they’ve answered and the number of questions they’ve asked.
+Is the application navigable?
+
+Does the application interact with the backend correctly?
+
+Each user’s answer and each new poll is correctly recorded on the backend.
+
+
+Architecture
+
+CRITERIA
+MEETS SPECIFICATIONS
+
+Does application state update correctly?
+
+Updates are triggered by dispatching action creators to reducers.
+
+Reducers and actions are written properly and correctly return updated state to the store.

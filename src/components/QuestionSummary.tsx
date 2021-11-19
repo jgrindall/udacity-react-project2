@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from "react-redux";
 import {Link, RouteComponentProps} from "react-router-dom";
 import {RootState, Question} from "../types";
+import _ from "underscore";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -23,6 +24,11 @@ type MyState = {
 
 };
 
+const formatQuestion = (s:string)=>{
+    const numWords = 3;
+    return "would your rather " + _.first(s.split(" "), numWords).join(" ") + "... or ...";
+};
+
 class QuestionSummary extends Component<MyProps, MyState> {
     render() {
         const question:Question = this.props.question;
@@ -35,42 +41,26 @@ class QuestionSummary extends Component<MyProps, MyState> {
         return (
             <div className="question">
                 <p>
-                    {authorName} asked:
+                    {authorName + " asked"}
                 </p>
                 <div className="container">
                     <div className="left">
                         <img className="avatar" src={avatar}/>
                     </div>
                     <div className="right">
+
                         <p>
-                            Would you rather...
+                            {formatQuestion(question.optionOne.text || "")}
                         </p>
 
-                        <span>
-                            {question.optionOne.text.split(" ")[0] + "..."}
-                        </span>
-
-                        <span>
-                            {question.optionOne.text}
-                        </span>
-
-                        <span>
-                            {question.optionTwo.text}
-                        </span>
-
-                        <p>{question.optionOne.votes.length}</p>
-                        <p>{question.optionTwo.votes.length}</p>
-
-                        <p>You said</p>
-                        <p>{question.optionOne.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
-                        <p>{question.optionTwo.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
+                        <Link className="link" to={{
+                            pathname: '/question/' + question.id
+                        }}>View Poll</Link>
 
                     </div>
                 </div>
 
-                <Link className="link" to={{
-                    pathname: '/question/' + question.id
-                }}>View Poll</Link>
+
 
             </div>
         )

@@ -31,11 +31,17 @@ class QuestionSubmission extends Component<MyProps, MyState> {
             avatar = author.avatarURL;
             authorName = author.name;
         }
+
+        const ans1 = this.props.authedUser ? this.props.question.optionOne.votes.includes(this.props.authedUser) : false;
+        const ans2 = this.props.authedUser ? this.props.question.optionTwo.votes.includes(this.props.authedUser) : false;
+        const isAnswered:boolean = ans1 || ans2;
+        const option = ans1 ? this.props.question.optionOne : (ans2 ? this.props.question.optionTwo : null);
+        const answer = isAnswered ? <p>{"You said: " + option?.text} </p> : <p></p>;
         return (
             <div className="question">
 
                 <p>
-                    {authorName} asked:
+                    {authorName} asked would you rather:
                 </p>
 
                 <div className="container">
@@ -43,30 +49,27 @@ class QuestionSubmission extends Component<MyProps, MyState> {
                         <img className="avatar" src={avatar}/>
                     </div>
                     <div className="right">
-                        <p>
-                            Would you rather...
-                        </p>
 
                         <form>
                             <div>
-                                <input type="radio" id="optionOne" name="optionOne" value="optionOne" checked/>
+                                <input type="radio" id="optionOne" name="options" value="optionOne" disabled={isAnswered}/>
                                     <label htmlFor="optionOne">{this.props.question.optionOne.text}</label>
+                                    <span>{isAnswered ? '(' + this.props.question.optionOne.votes.length + ' votes)' : ''}</span>
                             </div>
 
                             <div>
-                                <input type="radio" id="optionTwo" name="optionTwo" value="optionTwo"/>
+                                <input type="radio" id="optionTwo" name="options" value="optionTwo" disabled={isAnswered}/>
                                 <label htmlFor="optionOne">{this.props.question.optionTwo.text}</label>
+                                <span>{isAnswered ? '(' + this.props.question.optionTwo.votes.length + ' votes)' : ''}</span>
+
                             </div>
+
+                            <button disabled={isAnswered} className="pure-button pure-button-primary">Submit</button>
+
                         </form>
 
-                        <p>{this.props.question.optionOne.votes.length}</p>
-                        <p>{this.props.question.optionTwo.votes.length}</p>
+                        {answer}
 
-                        <p>You said</p>
-                        <p>{this.props.question.optionOne.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
-                        <p>{this.props.question.optionTwo.votes.includes(this.props.authedUser) ? "YES" : "NO"}</p>
-
-                        <button className="pure-button pure-button-primary">Submit</button>
                     </div>
                 </div>
 

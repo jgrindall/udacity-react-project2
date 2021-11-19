@@ -53,6 +53,7 @@ a.link{
 }
 
 #page{
+  padding:20px;
   padding-top: 120px;
 }
 
@@ -107,6 +108,11 @@ img.avatar.avatar-small{
 
 .login ul .user span{
   margin:15px;
+}
+
+.questions div.none{
+  margin-top:50px;
+  text-align: center;
 }
 
 .questions ul{
@@ -176,3 +182,4 @@ label{
 input[type=radio]{
   transform: scale(2);
 }
+

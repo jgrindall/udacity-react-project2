@@ -36,11 +36,16 @@ class AddQuestion extends Component<MyProps, MyState> {
                 <p>
                     {authorName}, create a new question!
                 </p>
+
+
                 <div className="container">
                     <div className="left">
                         <img className="avatar" src={avatar}/>
                     </div>
                     <div className="right">
+                        <p>
+                            Would you rather...
+                        </p>
                         <input type="text" placeholder="Option One"/>
                         <br/>
                         <input type="text" placeholder="Option Two"/>
