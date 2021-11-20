@@ -2,10 +2,17 @@ import {Route} from "react-router-dom";
 import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import {ProtectedRouteProps} from "../types";
-
-class RedirectComponent extends Component<{}, {}> {
+import {RouteComponentProps} from "react-router-dom";
+class RedirectComponent extends Component<RouteComponentProps, {}> {
     render() {
-        return <Redirect to={"/login"}/>;
+        return <Redirect to={
+            {
+                pathname:"/login",
+                state:{
+                    "redirect": this.props.location.pathname
+                }
+            }
+        } />;
     }
 }
 
@@ -14,6 +21,6 @@ export class ProtectedRoute extends Route<ProtectedRouteProps> {
         return this.props.isAllowed ?
             (<Route {...this.props}/>)
             :
-            <Route {...this.props} component={RedirectComponent} />;
+            <Route {...this.props} component={RedirectComponent}/>;
     }
 }

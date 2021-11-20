@@ -1,11 +1,11 @@
 a.link {
     color: white;
     margin: 15px;
-    text-decoration: none !important;
     padding: 10px;
     background: #0078e7;
     min-width: 200px;
     display: inline-block;
+    text-decoration: none !important;
 }
 
 
@@ -16,6 +16,9 @@ button {
         a {
             color: white !important;
             text-decoration: none !important;
+            &:hover{
+                text-decoration: underline !important;
+            }
         }
     }
 }

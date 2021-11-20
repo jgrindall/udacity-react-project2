@@ -63,6 +63,7 @@
 
 .login{
     ul{
+        display: flex;
         .user {
             display: flex;
             flex-direction: column;
@@ -94,6 +95,14 @@
     margin-bottom: 25px;
 }
 
+.leaderboard{
+    li{
+        display: flex;
+        >:nth-child(2){
+            flex:1;
+        }
+    }
+}
 
 .container {
     display: flex;
