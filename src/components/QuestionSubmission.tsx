@@ -1,13 +1,16 @@
-import React, {Component} from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from "react-redux";
 import {RouteComponentProps} from "react-router-dom";
-import {RootState, Question} from "../types";
+import {RootState, Question, QuestionOption, AnswerOption} from "../types";
+import QuestionRadio from "./QuestionRadio";
+import {handleSubmission} from "../actions/shared";
+import _ from "underscore";
+import Avatar from "./Avatar";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
         authedUser: state.authedUser,
-        quizUsers:state.quizUsers
+        users:state.users
     }
 };
 
@@ -20,56 +23,105 @@ type MyProps = PropsFromRedux & RouteComponentProps & {
 };
 
 type MyState = {
-
+    selected: AnswerOption
 };
 
 class QuestionSubmission extends Component<MyProps, MyState> {
-    render() {
-        let authorName = "<Unknown user>", avatar = "/unknown.png";
-        const author = this.props.quizUsers[this.props.question.author];
-        if(author){
-            avatar = author.avatarURL;
-            authorName = author.name;
-        }
+    state = {
+        selected: AnswerOption.OPTION1
+    };
 
-        const ans1 = this.props.authedUser ? this.props.question.optionOne.votes.includes(this.props.authedUser) : false;
-        const ans2 = this.props.authedUser ? this.props.question.optionTwo.votes.includes(this.props.authedUser) : false;
-        const isAnswered:boolean = ans1 || ans2;
-        const option = ans1 ? this.props.question.optionOne : (ans2 ? this.props.question.optionTwo : null);
-        const answer = isAnswered ? <p>{"You said: " + option?.text} </p> : <p></p>;
+    updateSelected(option:AnswerOption){
+        this.setState((currentState)=>{
+            return {
+                ...currentState,
+                selected:option
+            }
+        });
+    }
+
+    onValueChange(e:SyntheticEvent<HTMLInputElement>){
+        const target = (e.target as HTMLInputElement);
+        this.updateSelected(target.value as AnswerOption);
+    }
+    onSubmit(e:SyntheticEvent<HTMLFormElement>){
+        e.preventDefault();
+        if(this.state.selected){
+            this.props.dispatch(handleSubmission(this.props.authedUser, this.props.question.id, this.state.selected));
+        }
+        else{
+            alert("Please select an option");
+        }
+    }
+    render() {
+        const question = this.props.question;
+        const author = this.props.users[question.author];
+        const authorName = author ? author.name : "<Unknown user>";
+        const answerOptions:AnswerOption[] = [
+            AnswerOption.OPTION1,
+            AnswerOption.OPTION2
+        ];
+        let selectedOption:AnswerOption | undefined = undefined;
+        if(this.props.authedUser){
+            selectedOption = _.find(answerOptions, (key:AnswerOption) => {
+                const option: QuestionOption = question[key] as QuestionOption;
+                return !!(option && this.props.authedUser && option.votes.includes(this.props.authedUser));
+            });
+        }
+        const yourAnswer = (
+            selectedOption
+                ?
+                <p>
+                    {"You said you would rather " + question[selectedOption].text}
+                </p>
+                :
+                <p></p>
+            );
+        const totalVotes = question.optionOne.votes.length + question.optionTwo.votes.length;
+        const options = (answerOptions.map((key:AnswerOption)=>{
+            return <QuestionRadio
+                value={key}
+                disabled={!!selectedOption}
+                text={question[key].text}
+                votes={{
+                    count:question[key].votes.length,
+                    percent:question[key].votes.length * 100/totalVotes
+                }}
+                checked={[selectedOption, this.state.selected].includes(key)}
+                onChange={this.onValueChange.bind(this)}
+            />;
+        }));
+
         return (
             <div className="question">
-
                 <p>
                     {authorName} asked would you rather:
                 </p>
-
                 <div className="container">
                     <div className="left">
-                        <img className="avatar" src={avatar}/>
+                        <Avatar
+                            user={author}
+                            size={"default"}
+                        />
                     </div>
                     <div className="right">
-
-                        <form>
-                            <div>
-                                <input type="radio" id="optionOne" name="options" value="optionOne" disabled={isAnswered}/>
-                                    <label htmlFor="optionOne">{this.props.question.optionOne.text}</label>
-                                    <span>{isAnswered ? '(' + this.props.question.optionOne.votes.length + ' votes)' : ''}</span>
-                            </div>
-
-                            <div>
-                                <input type="radio" id="optionTwo" name="options" value="optionTwo" disabled={isAnswered}/>
-                                <label htmlFor="optionOne">{this.props.question.optionTwo.text}</label>
-                                <span>{isAnswered ? '(' + this.props.question.optionTwo.votes.length + ' votes)' : ''}</span>
-
-                            </div>
-
-                            <button disabled={isAnswered} className="pure-button pure-button-primary">Submit</button>
+                        <form onSubmit={this.onSubmit.bind(this)}>
+                            {
+                                options
+                            }
+                            <p className="center">
+                                <button
+                                    disabled={!!selectedOption}
+                                    className="pure-button pure-button-primary"
+                                >
+                                    Submit
+                                </button>
+                            </p>
 
                         </form>
-
-                        {answer}
-
+                        {
+                            yourAnswer
+                        }
                     </div>
                 </div>
 

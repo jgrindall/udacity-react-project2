@@ -7,6 +7,7 @@ import reducer from "./reducers";
 import {createStore} from "redux";
 import middleware from "./middleware";
 import {BrowserRouter} from "react-router-dom";
+import './scss/main.scss';
 
 const store = createStore(reducer, middleware);
 

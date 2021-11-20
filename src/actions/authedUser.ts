@@ -1,13 +1,16 @@
-export const SET_AUTHED_USER: string = 'SET_AUTHED_USER';
+export enum ActionTypes {
+    SET_AUTHED_USER = 'SET_AUTHED_USER'
+}
 
-export type AuthAction = {
-    type: string,
-    id: string | null
-};
+export type Action =
+    {
+        type: ActionTypes.SET_AUTHED_USER;
+        id: string | null
+    };
 
-export function setAuthedUser(id: string | null): AuthAction {
+export function setAuthedUser(id: string | null): Action {
     return {
-        type: SET_AUTHED_USER,
+        type: ActionTypes.SET_AUTHED_USER,
         id
     }
 }

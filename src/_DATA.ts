@@ -41,7 +41,7 @@ function formatQuestion (defn: QuestionDefn) : Question{
     }
 }
 
-export async function _saveQuestion (defn:QuestionDefn): Promise<Question> {
+export async function _saveQuestion (defn:QuestionDefn): Promise<{user: User, question: Question }> {
     return new Promise((res) => {
         const authedUser = defn.author;
         const formattedQuestion = formatQuestion(defn);
@@ -59,13 +59,15 @@ export async function _saveQuestion (defn:QuestionDefn): Promise<Question> {
                     questions: users[authedUser].questions.concat([formattedQuestion.id])
                 }
             };
-
-            res(formattedQuestion)
+            res({
+                user: users[authedUser],
+                question: formattedQuestion
+            });
         }, 1000)
     })
 }
 
-function updateUser(authedUser:string, qid:string, answer:AnswerOption){
+function updateUser(authedUser:string, qid:string, answer:AnswerOption): User{
     const user: User = users[authedUser];
     const currentAnswers: AnswerList = user.answers;
     const newAnswers: AnswerList = {
@@ -73,19 +75,20 @@ function updateUser(authedUser:string, qid:string, answer:AnswerOption){
         [qid]: answer
     };
 
-    const newUser: Record<string, User> = {
-        [authedUser]: {
-            ...user,
-            answers: newAnswers
-        }
+    const newUser:User = {
+        ...user,
+        answers: newAnswers
     };
+
     users = {
         ...users,
-        ...newUser
+        [authedUser]:newUser
     };
+
+    return newUser;
 }
 
-function updateQuestions(authedUser:string, qid:string, answer:AnswerOption){
+function updateQuestions(authedUser:string, qid:string, answer:AnswerOption):Question{
     const question:Question = questions[qid];
     const newQuestion:Question = {
         ...questions[qid],
@@ -100,31 +103,39 @@ function updateQuestions(authedUser:string, qid:string, answer:AnswerOption){
     questions = {
         ...questions,
         ...newQuestionList
-    }
+    };
+    return newQuestion;
 }
 
-export async function _saveQuestionAnswer (quesAnswer: { authedUser:string, qid:string, answer:AnswerOption }) : Promise<void> {
+export async function saveQuestionAnswer (quesAnswer: { authedUser:string, qid:string, answer:AnswerOption }) : Promise<{user:User, question:Question}> {
     return new Promise((res) => {
         setTimeout(() => {
-            updateUser(quesAnswer.authedUser, quesAnswer.qid, quesAnswer.answer);
-            updateQuestions(quesAnswer.authedUser, quesAnswer.qid, quesAnswer.answer);
-            res();
+            const user:User = updateUser(quesAnswer.authedUser, quesAnswer.qid, quesAnswer.answer);
+            const question:Question = updateQuestions(quesAnswer.authedUser, quesAnswer.qid, quesAnswer.answer);
+            res({
+                user,
+                question
+            });
         }, 1000);
     })
 }
 
-export function getDummyQuestion():Question {
+export async function getInitialData(): Promise<{users: UserList, questions: QuestionList, authedUser: string }> {
+    const users: UserList = await _getQuizUsers();
+    const questions = await _getQuestions();
+    const authedUser = getAuthedUser();
     return {
-        id: "1",
-        author:"",
-        timestamp: 1,
-        optionOne:{
-            text:"string",
-            votes:[]
-        },
-        optionTwo:{
-            text:"string",
-            votes:[]
-        }
+        users,
+        questions,
+        authedUser
     };
 }
+
+function getAuthedUser():string{
+    return localStorage.getItem("authedUser") || "";
+}
+
+export async function _saveUser(authedUser:string | null){
+    localStorage.setItem("authedUser", authedUser || "");
+}
+

@@ -1,0 +1,127 @@
+@import "shared";
+@import "avatar";
+
+.header {
+    background-color: #282c34;
+    min-height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 1vmin);
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+
+    > button {
+        margin: 10px;
+    }
+
+    a {
+        color: white !important;
+    }
+}
+
+.header .user {
+    margin-left: auto;
+    margin-right: 25px;
+
+    span {
+        margin-right: 15px;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+
+        img {
+            margin-right: 15px;
+        }
+    }
+}
+
+#page {
+    padding: 20px;
+    padding-top: 120px;
+}
+
+.title {
+    text-align: center;
+    font-size: larger;
+    margin: 25px 15px;
+
+    a.active {
+        text-decoration: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-thickness: 3px !important;
+        text-underline-offset: 4px !important;
+    }
+}
+
+.login{
+    ul{
+        .user {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            align-items: center;
+            button {
+                max-width: 100px;
+            }
+            span {
+                margin: 15px;
+            }
+        }
+    }
+}
+
+.questions{
+    div.none {
+        margin-top: 50px;
+        text-align: center;
+    }
+}
+
+.question, .addQuestion {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 25px;
+    border: 2px solid #282c34;
+    margin-bottom: 25px;
+}
+
+
+.container {
+    display: flex;
+    > div {
+        padding: 10px;
+        &.right {
+            flex: 1;
+        }
+    }
+}
+
+.questionView, .addQuestion {
+    margin-top: 25px;
+}
+
+.addQuestion {
+    font-size: larger;
+    input[type=text] {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        display: block;
+        padding: 10px;
+    }
+    button {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: inherit;
+    }
+}

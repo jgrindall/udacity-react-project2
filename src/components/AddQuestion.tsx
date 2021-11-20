@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
+import React, {ChangeEvent, Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from "react-redux";
 import {RouteComponentProps} from "react-router-dom";
-import {RootState, Question} from "../types";
+import {AnswerOption, AddQuestionState, RootState, QuestionFilter} from "../types";
+import {handleAddQuestion} from "../actions/shared";
+import Avatar from "./Avatar";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
-        authedUser: state.authedUser,
-        quizUsers:state.quizUsers
+        author: state.users[state.authedUser]
     }
 };
 
@@ -15,47 +15,93 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type MyProps = PropsFromRedux & RouteComponentProps & {
-    question: Question
-};
+type MyProps = PropsFromRedux & RouteComponentProps & {};
 
-type MyState = {
+class AddQuestion extends Component<MyProps, AddQuestionState> {
+    state = {
+        optionOneText: "",
+        optionTwoText: ""
+    };
+    onChange(type:AnswerOption, e:ChangeEvent<HTMLInputElement>){
+        const value:string = e.target.value;
+        const newState:AddQuestionState = (
+            type === AnswerOption.OPTION1
+                ?
+                {
+                    optionOneText: value
+                }
+                :
+                {
+                    optionTwoText: value
+                }
+            );
 
-};
-
-class AddQuestion extends Component<MyProps, MyState> {
+        this.setState((currentState:AddQuestionState)=>{
+            return {
+                ...currentState,
+                ...newState
+            };
+        });
+    }
+    onSubmit(e:SyntheticEvent<HTMLFormElement>){
+        e.preventDefault();
+        this.props.dispatch(handleAddQuestion(
+            {
+                ...this.state,
+                author:this.props.author.id
+            },
+            ()=>{
+                /**
+                 * redirect the user
+                 */
+                alert("Qestion added");
+                this.props.history.push("/questions/" + QuestionFilter.UNANSWERED);
+            })
+        );
+        return false;
+    }
     render() {
-        let authorName = "<Unknown user>", avatar = "/unknown.png";
-        const author = this.props.quizUsers[this.props.authedUser];
-        if(author){
-            avatar = author.avatarURL;
-            authorName = author.name;
-        }
+        // should we enable the submit button?
+        const valid = !!this.state.optionOneText.trim() && !!this.state.optionOneText.trim();
+
         return (
             <div className="addQuestion">
                 <p>
-                    {authorName}, create a new question!
+                    {this.props.author.name}, create a new question!
                 </p>
-
-
                 <div className="container">
                     <div className="left">
-                        <img className="avatar" src={avatar}/>
+                        <Avatar
+                            user={this.props.author}
+                            size={"default"}
+                        />
                     </div>
                     <div className="right">
-                        <p>
-                            Would you rather...
-                        </p>
-                        <input type="text" placeholder="Option One"/>
-                        <br/>
-                        <input type="text" placeholder="Option Two"/>
+                        <form onSubmit={this.onSubmit.bind(this)}>
+                            <p>
+                                Would you rather...
+                            </p>
+                            <input
+                                type="text"
+                                placeholder="Option One"
+                                value={this.state.optionOneText}
+                                onChange={this.onChange.bind(this, AnswerOption.OPTION1)}
+                            />
+                            <br/>
+                            <input
+                                type="text"
+                                placeholder="Option Two"
+                                value={this.state.optionTwoText}
+                                onChange={this.onChange.bind(this, AnswerOption.OPTION2)}
+                            />
+                            <br/>
+                            <button disabled={!valid} className="pure-button pure-button-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
-
-                <button className="pure-button pure-button-primary">Submit</button>
             </div>
         )
     }
 }
 
-export default connector(AddQuestion)
+export default connector(AddQuestion);

@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
-import {User, UserList} from "../types";
-import {setAuthedUser} from "../actions/authedUser";
+import {User} from "../types";
+import {handleAuthedUser} from "../actions/shared";
 import {withRouter, RouteComponentProps, Redirect} from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
 import {RootState} from "../types";
+import LoginItem from "./LoginItem";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
-        quizUsers:state.quizUsers,
+        users:state.users,
         authedUser: state.authedUser
     }
 };
@@ -17,33 +17,24 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type MyProps = PropsFromRedux & RouteComponentProps & {
-    loginProp: any
-};
+type MyProps = PropsFromRedux & RouteComponentProps;
 
-type MyState = {
-
-};
-
-class Login extends Component<MyProps, MyState> {
+class Login extends Component<MyProps, {}> {
     onSelectUser(user:User){
-        this.props.dispatch(setAuthedUser(user.id));
+        this.props.dispatch(handleAuthedUser(user.id));
     }
     render() {
-
         if(this.props.authedUser){
-            return <Redirect to={"/questions/unanswered"}/>;
+            /**
+             * Just push to home page
+             */
+            return <Redirect to={"/"}/>;
         }
-
-        const ids = Object.keys(this.props.quizUsers);
-        const users = ids.map(id => {
-            const user = this.props.quizUsers[id];
+        const userIds = Object.keys(this.props.users);
+        const users = userIds.map( (userId:string) => {
+            const user = this.props.users[userId];
             return (
-                <div className="user" key={user.id}>
-                    <img className = "avatar" alt="avatar" src={user.avatarURL}/>
-                    <span>{user.name}</span>
-                    <button className="pure-button pure-button-primary" onClick={this.onSelectUser.bind(this, user)}>Select</button>
-                </div>
+                <LoginItem user={user} onSelectUser={this.onSelectUser.bind(this, user)}/>
             );
         });
         return (
@@ -53,9 +44,6 @@ class Login extends Component<MyProps, MyState> {
                     {users}
                 </ul>
             </div>
-        )
-        return (
-            <div>Login</div>
         );
     }
 }

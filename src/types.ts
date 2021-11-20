@@ -1,6 +1,14 @@
-import {RouteProps, Redirect} from "react-router-dom";
+import {RouteProps} from "react-router-dom";
 
-export type AnswerOption = 'optionOne'  | 'optionTwo';
+export enum AnswerOption {
+    "OPTION1" = "optionOne",
+    "OPTION2" = "optionTwo"
+}
+
+export enum QuestionFilter {
+    ANSWERED = "answered",
+    UNANSWERED = "unanswered"
+}
 
 export type AnswerList = Record<string, AnswerOption>;
 
@@ -37,10 +45,20 @@ export type QuestionList = Record<string, Question>;
 
 export type RootState = {
     authedUser:string,
-    quizUsers:UserList,
+    users:UserList,
     questions: QuestionList
 };
 
 export interface ProtectedRouteProps extends RouteProps {
     isAllowed: boolean;
 }
+
+export type LeaderboardInfo = {
+    asked:number,
+    answered: number
+}
+
+export type AddQuestionState = {
+    optionOneText?: string;
+    optionTwoText?: string;
+};

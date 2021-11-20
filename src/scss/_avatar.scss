@@ -1,0 +1,10 @@
+img.avatar {
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid #282c34;
+    padding: 10px;
+    &.avatar-small {
+        width: 50px;
+    }
+}
+

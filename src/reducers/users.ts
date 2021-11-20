@@ -1,11 +1,19 @@
-import {RECEIVE_USERS} from "../actions/users";
+import {ActionTypes, Action} from "../actions/users";
+import {UserList} from "../types";
 
-export default function users(state = [], action:any){
-    if(action.type === RECEIVE_USERS){
+export default function users(state: UserList = {}, action:Action){
+   if(action.type === ActionTypes.RECEIVE_QUIZ_USERS){
         return {
             ...state,
             ...action.users
         }
     }
-    return state;
+   else if(action.type === ActionTypes.UPDATE_USER){
+       return {
+           ...state,
+           [action.user.id]: action.user
+       }
+   }
+   return state;
 }
+

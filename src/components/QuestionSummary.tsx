@@ -3,12 +3,11 @@ import {connect, ConnectedProps} from "react-redux";
 import {Link, RouteComponentProps} from "react-router-dom";
 import {RootState, Question} from "../types";
 import _ from "underscore";
+import moment from "moment";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
-        authedUser: state.authedUser,
-        quizUsers:state.quizUsers
+        users:state.users
     }
 };
 
@@ -20,20 +19,17 @@ type MyProps = PropsFromRedux & RouteComponentProps & {
     question: Question
 };
 
-type MyState = {
-
-};
-
 const formatQuestion = (s:string)=>{
     const numWords = 3;
     return "would your rather " + _.first(s.split(" "), numWords).join(" ") + "... or ...";
 };
 
-class QuestionSummary extends Component<MyProps, MyState> {
+class QuestionSummary extends Component<MyProps, {}> {
     render() {
         const question:Question = this.props.question;
         let authorName:string = "<Unknown user>", avatar = "/unknown.png";
-        const author = this.props.quizUsers[question.author];
+        const author = this.props.users[question.author];
+        const date = moment(question.timestamp).fromNow();
         if(author){
             avatar = author.avatarURL;
             authorName = author.name;
@@ -41,27 +37,31 @@ class QuestionSummary extends Component<MyProps, MyState> {
         return (
             <div className="question">
                 <p>
+                    {date}
+                </p>
+                <p>
                     {authorName + " asked"}
                 </p>
                 <div className="container">
                     <div className="left">
-                        <img className="avatar" src={avatar}/>
+                        <img className="avatar" alt="avatar" src={avatar}/>
                     </div>
                     <div className="right">
-
                         <p>
                             {formatQuestion(question.optionOne.text || "")}
                         </p>
-
-                        <Link className="link" to={{
-                            pathname: '/question/' + question.id
-                        }}>View Poll</Link>
-
+                        <div className="center" style={{"marginTop": "50px"}}>
+                            <Link
+                                className="link"
+                                to={{
+                                    pathname: '/question/' + question.id
+                                }}
+                            >
+                                View Poll
+                            </Link>
+                        </div>
                     </div>
                 </div>
-
-
-
             </div>
         )
     }

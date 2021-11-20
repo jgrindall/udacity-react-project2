@@ -3,13 +3,13 @@ import {connect, ConnectedProps} from "react-redux";
 import {Link, RouteComponentProps} from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import {RootState} from "../types";
-import {setAuthedUser} from "../actions/authedUser";
+import {handleAuthedUser} from "../actions/shared";
+import Avatar from "./Avatar";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
         authedUser:state.authedUser,
-        quizUsers:state.quizUsers
+        users:state.users
     }
 };
 
@@ -17,25 +17,19 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type MyProps = PropsFromRedux & RouteComponentProps & {
-    navProp: any
-};
+type MyProps = PropsFromRedux & RouteComponentProps;
 
-type MyState = {
-
-};
-
-class UserIndicator extends Component<MyProps, MyState> {
+class UserIndicator extends Component<MyProps, {}> {
     onLogout(){
-       this.props.dispatch(setAuthedUser(null));
+       this.props.dispatch(handleAuthedUser(null));
+       this.props.history.push('/login');
     }
     render() {
-        const user = this.props.authedUser ? this.props.quizUsers[this.props.authedUser] : null;
+        const user = this.props.authedUser ? this.props.users[this.props.authedUser] : null;
         const button = user ?
             (
                 <div>
-
-                    <img className="avatar avatar-small" src={user.avatarURL}/>
+                    <Avatar user={user} size={"small"}/>
                     <span>
                         {user.name}
                     </span>

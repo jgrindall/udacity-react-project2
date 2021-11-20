@@ -6,8 +6,6 @@ import QuestionSubmission from "./QuestionSubmission";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        loading: !state.authedUser,
-        quizUsers:state.quizUsers,
         questions:state.questions
     }
 };
@@ -16,27 +14,14 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type MyProps = PropsFromRedux & RouteComponentProps & {
-    questionProp:any
-};
+type MyProps = PropsFromRedux & RouteComponentProps;
 
-type MyState = {
-
-};
-
-type Match = {
-    params:{
-        id:string
-    }
-}
-
-class QuestionView extends Component<MyProps, MyState> {
+class QuestionView extends Component<MyProps, {}> {
     render() {
-        const id = (this.props.match as unknown as Match).params.id as string;
+        const params = this.props.match?.params as unknown as {id: string};
+        const id = params.id;
         const question = this.props.questions[id];
-
         let el;
-
         if(question){
             el = (
                 <div className="questionView">

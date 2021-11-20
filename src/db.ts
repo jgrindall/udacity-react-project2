@@ -1,4 +1,4 @@
-import {QuestionList, UserList} from "./types";
+import {QuestionList, UserList, AnswerOption} from "./types";
 
 let users : UserList = {
     sarahedo: {
@@ -6,10 +6,10 @@ let users : UserList = {
         name: 'Sarah Edo',
         avatarURL: "/icon1.png",
         answers: {
-            "8xf0y6ziyjabvozdd253nd": 'optionOne',
-            "6ni6ok3ym7mf1p33lnez": 'optionTwo',
-            "am8ehyc8byjqgar0jgpub9": 'optionTwo',
-            "loxhs1bqm25b708cmbf3g": 'optionTwo'
+            "8xf0y6ziyjabvozdd253nd": AnswerOption.OPTION1,
+            "6ni6ok3ym7mf1p33lnez": AnswerOption.OPTION2,
+            "am8ehyc8byjqgar0jgpub9": AnswerOption.OPTION2,
+            "loxhs1bqm25b708cmbf3g": AnswerOption.OPTION2
         },
         questions: ['8xf0y6ziyjabvozdd253nd', 'am8ehyc8byjqgar0jgpub9']
     },
@@ -18,8 +18,8 @@ let users : UserList = {
         name: 'Tyler McGinnis',
         avatarURL: "/icon2.png",
         answers: {
-            "vthrdm985a262al8qx3do": 'optionOne',
-            "xj352vofupe1dqz9emx13r": 'optionTwo',
+            "vthrdm985a262al8qx3do": AnswerOption.OPTION1,
+            "xj352vofupe1dqz9emx13r": AnswerOption.OPTION2,
         },
         questions: ['loxhs1bqm25b708cmbf3g', 'vthrdm985a262al8qx3do'],
     },
@@ -28,8 +28,8 @@ let users : UserList = {
         name: 'John Doe',
         avatarURL: "/icon3.png",
         answers: {
-            "xj352vofupe1dqz9emx13r": 'optionOne',
-            "vthrdm985a262al8qx3do": 'optionTwo',
+            "xj352vofupe1dqz9emx13r": AnswerOption.OPTION1,
+            "vthrdm985a262al8qx3do": AnswerOption.OPTION2,
         },
         questions: ['6ni6ok3ym7mf1p33lnez', 'xj352vofupe1dqz9emx13r'],
     }
