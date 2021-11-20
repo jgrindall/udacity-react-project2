@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {Question, QuestionFilter} from "../types";
+import {Question, RootState, QuestionFilter} from "../types";
 import QuestionSummary from "./QuestionSummary";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 import { connect, ConnectedProps } from "react-redux";
-import {RootState} from "../types";
 import QuestionNavigation from "./QuestionNavigation";
+import _ from "underscore";
 
 const _isAnswered = (user:any) => (question:Question):boolean => {
     if(!user){
@@ -28,44 +28,42 @@ type MyProps = PropsFromRedux & RouteComponentProps & {};
 
 class Questions extends Component<MyProps, {}> {
     render() {
-        const params = this.props.match?.params as unknown as {filter: string};
+        const params = this.props.match?.params as unknown as {filter: QuestionFilter};
         const filter = params.filter || QuestionFilter.UNANSWERED;
         const isAnswered = _isAnswered(this.props.authedUser);
-        const makeQuestionList = (id:string) => {
-            const question = this.props.questions[id];
-            return (
-                <li key={id}>
+
+        const groups:Record<QuestionFilter, Question[]> = _.groupBy(Object.values(this.props.questions), (question: Question)=>{
+            return isAnswered(question) ? QuestionFilter.ANSWERED : QuestionFilter.UNANSWERED;
+        }) as Record<QuestionFilter, Question[]>;
+
+        const elements = (groups[filter] || [])
+            .sort((questionA:Question, questionB:Question)=>{
+                const timeA = questionA?.timestamp, timeB = questionB?.timestamp;
+                return timeA === timeB ? 0 : (timeA > timeB ? -1 : 1);
+            })
+            .map((question:Question)=>
+                <li key={question.id}>
                     <div>
                         <QuestionSummary question={question}></QuestionSummary>
                     </div>
                 </li>
             );
-        };
-
-        const ids:string[] = Object.keys(this.props.questions);
-
-        const filterFn = (filter === "answered"
-            ?
-            ((question:Question) => isAnswered(question))
-            :
-            ((question:Question) => !isAnswered(question)));
-
-        const element = ids
-            .filter(id=>{
-                const question = this.props.questions[id];
-                return filterFn(question);
-            })
-            .sort((a:string, b:string)=>{
-                const timeA = this.props.questions[a]?.timestamp, timeB = this.props.questions[b]?.timestamp;
-                return timeA === timeB ? 0 : (timeA > timeB ? -1 : 1);
-            })
-            .map(makeQuestionList);
 
         return (
 
             <div className="questions">
-                <QuestionNavigation filter={filter}></QuestionNavigation>
-                {element.length >= 1 ? <ul>{element}</ul> : <div className='none'>None found</div>}
+                <QuestionNavigation filter={filter} numUnanswered={groups.unanswered ? groups.unanswered.length : 0} numAnswered={groups.answered ? groups.answered.length : 0}/>
+                {
+                    elements.length >= 1
+                        ?
+                        <ul>
+                            {elements}
+                        </ul>
+                        :
+                        <p className='center'>
+                            None found
+                        </p>
+                }
             </div>
         )
     }

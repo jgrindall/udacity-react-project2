@@ -39,7 +39,7 @@ export function handleSubmission(authedUser:string, qid:string, answer:AnswerOpt
  * @param defn
  * @param callback - redirect the user after adding a question
  */
-export function handleAddQuestion(defn:QuestionDefn, callback:Function): any{
+export function handleAddQuestion(defn:QuestionDefn, callback:()=>void): any{
     return (dispatch: any) => {
         return _saveQuestion(defn)
             .then(response=>{
@@ -54,11 +54,14 @@ export function handleAddQuestion(defn:QuestionDefn, callback:Function): any{
  * save the authedUser to localStorage and then update the state
  * @param authedUser
  */
-export function handleAuthedUser(authedUser: string | null): any{
+export function handleAuthedUser(authedUser: string | null, callback?: ()=>void): any{
     return (dispatch: any) => {
         return _saveUser(authedUser)
             .then(()=>{
                 dispatch(setAuthedUser(authedUser));
+                if(callback){
+                    callback();
+                }
             });
     };
 }

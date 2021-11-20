@@ -54,7 +54,7 @@ class AddQuestion extends Component<MyProps, AddQuestionState> {
                 /**
                  * redirect the user
                  */
-                alert("Qestion added");
+                alert("Question added");
                 this.props.history.push("/questions/" + QuestionFilter.UNANSWERED);
             })
         );

@@ -3,7 +3,9 @@ import {Link} from "react-router-dom";
 import {QuestionFilter} from "../types";
 
 function QuestionNavigation (props:{
-    filter:QuestionFilter
+    filter:QuestionFilter,
+    numUnanswered:number,
+    numAnswered:number
 }) {
     return (
         <p className="title">
@@ -13,7 +15,7 @@ function QuestionNavigation (props:{
                     pathname: '/questions/unanswered'
                 }}
             >
-                Unanswered Questions
+                Unanswered Questions ({props.numUnanswered})
             </Link>
 
             <Link
@@ -22,7 +24,7 @@ function QuestionNavigation (props:{
                     pathname: '/questions/answered'
                 }}
             >
-                Answered Questions
+                Answered Questions ({props.numAnswered})
             </Link>
 
         </p>

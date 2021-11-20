@@ -55,13 +55,13 @@ class Leaderboard extends Component<MyProps, {}> {
 
         const entries = userIds.map( (userId:string) =>{
             return (
-                <LeaderboardItem user={users[userId]} info={this.props.userInfo[userId]}></LeaderboardItem>
+                <LeaderboardItem key={userId} user={users[userId]} info={this.props.userInfo[userId]}></LeaderboardItem>
             );
         });
 
         return (
             <div className="leaderboard">
-                <p class="center">
+                <p className="center">
                     Leaderboard:
                 </p>
                 <ul>

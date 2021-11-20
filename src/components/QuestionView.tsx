@@ -31,9 +31,9 @@ class QuestionView extends Component<MyProps, {}> {
         }
         else{
             el =  (
-                <div>
-                    Not found
-                </div>
+                <p className="center">
+                    Question not found
+                </p>
             );
         }
 

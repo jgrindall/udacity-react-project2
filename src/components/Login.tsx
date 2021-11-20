@@ -21,7 +21,15 @@ type MyProps = PropsFromRedux & RouteComponentProps;
 
 class Login extends Component<MyProps, {}> {
     onSelectUser(user:User){
-        this.props.dispatch(handleAuthedUser(user.id));
+        this.props.dispatch(handleAuthedUser(user.id, ()=>{
+            /**
+             * login and then redirect
+             */
+            const state = this.props.location.state as {redirect?: string};
+            if(state && state.redirect){
+                this.props.history.push(state.redirect);
+            }
+        }));
     }
     render() {
         if(this.props.authedUser){
@@ -30,11 +38,15 @@ class Login extends Component<MyProps, {}> {
              */
             return <Redirect to={"/"}/>;
         }
+
+        /**
+         * show the available users
+         */
         const userIds = Object.keys(this.props.users);
         const users = userIds.map( (userId:string) => {
             const user = this.props.users[userId];
             return (
-                <LoginItem user={user} onSelectUser={this.onSelectUser.bind(this, user)}/>
+                <LoginItem key={user.id} user={user} onSelectUser={this.onSelectUser.bind(this, user)}/>
             );
         });
         return (
