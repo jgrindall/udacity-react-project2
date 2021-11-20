@@ -20,6 +20,6 @@ https://review.udacity.com/#!/rubrics/1567/view
 
 - To compile and run locally:
 
-	- npm i
+	- npm ci
 	- npm run start
 	
