@@ -6,9 +6,10 @@ function Avatar (props:{
     size: string
 }) {
     const src = (props.user?.avatarURL || "/unknown.png");
+    const className = `avatar avatar-${props.size}`;
     return (
         <img
-            className = {"avatar " + ("avatar-" + props.size)}
+            className = {className}
             alt="avatar"
             src={src}
         />

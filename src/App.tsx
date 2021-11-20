@@ -23,15 +23,9 @@ const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type MyProps = PropsFromRedux & RouteComponentProps & {
-    appProp: any
-};
+type MyProps = PropsFromRedux & RouteComponentProps;
 
-type MyState = {
-
-};
-
-class App extends Component<MyProps, MyState> {
+class App extends Component<MyProps, {}> {
     componentDidMount() {
         this.props.dispatch(handleInitialData());
     }
