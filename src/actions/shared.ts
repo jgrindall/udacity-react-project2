@@ -3,12 +3,13 @@ import {receiveUsers, updateUser} from './users';
 import {setAuthedUser} from "./authedUser";
 import {receiveQuestions, updateQuestion, appendQuestion} from "./questions";
 import {AnswerOption, QuestionDefn} from "../types";
+import {Dispatch} from "redux";
 
 /**
  * load the users, questions (from the file db.ts) and the authedUser (from localStorage)
  */
-export function handleInitialData(): any {
-    return (dispatch: any) => {
+export function handleInitialData(): any{
+    return (dispatch: Dispatch) => {
         return getInitialData()
             .then( (response) => {
                 dispatch(receiveUsers(response.users));
@@ -25,7 +26,7 @@ export function handleInitialData(): any {
  * @param answer
  */
 export function handleSubmission(authedUser:string, qid:string, answer:AnswerOption):any{
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         return saveQuestionAnswer({authedUser, qid, answer})
             .then(response=>{
                 dispatch(updateUser(response.user));
@@ -40,7 +41,7 @@ export function handleSubmission(authedUser:string, qid:string, answer:AnswerOpt
  * @param callback - redirect the user after adding a question
  */
 export function handleAddQuestion(defn:QuestionDefn, callback:()=>void): any{
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         return _saveQuestion(defn)
             .then(response=>{
                 dispatch(appendQuestion(response.question));
@@ -53,9 +54,10 @@ export function handleAddQuestion(defn:QuestionDefn, callback:()=>void): any{
 /**
  * save the authedUser to localStorage and then update the state
  * @param authedUser
+ * @param callback
  */
 export function handleAuthedUser(authedUser: string | null, callback?: ()=>void): any{
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         return _saveUser(authedUser)
             .then(()=>{
                 dispatch(setAuthedUser(authedUser));
