@@ -1,4 +1,5 @@
 import {AnswerOption} from "../types";
+import React  from 'react'
 
 function QuestionRadio (props:{
     value:AnswerOption,
@@ -42,7 +43,7 @@ function QuestionRadio (props:{
             </span>
 
         </div>
-    )
+    );
 }
 
 export default QuestionRadio;
