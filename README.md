@@ -20,6 +20,17 @@ https://review.udacity.com/#!/rubrics/1567/view
 
 - To compile and run locally:
 
-	- npm ci
+	- npm ci  (please use ci)
 	- npm run start
 	
+	
+	
+#### Videos of build
+
+- Using git checkout
+
+[/build.mp4](/build.mp4)
+
+- Download zip
+
+[/build2.mp4](/build2.mp4)
